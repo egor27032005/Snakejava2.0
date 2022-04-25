@@ -9,42 +9,25 @@ import java.util.function.Consumer;
 
 import static app.Colors.APP_BACKGROUND_COLOR;
 
-/**
- * Класс окна приложения
- */
-public class Application implements Consumer<Event> {
-    /**
-     * окно приложения
-     */
-    private final Window window;
 
-    /**
-     * Конструктор окна приложения
-     */
+public class Application implements Consumer<Event> {
+    private final Window window;
     public Application() {
-        // создаём окно
         window = App.makeWindow();
-        // задаём обработчиком событий текущий объект
         window.setEventListener(this);
-        // задаём заголовок
-        window.setTitle("Java 2D");
-        // задаём размер окна
+        window.setTitle("JavaSnake");
         window.setWindowSize(900, 900);
-        // задаём его положение
         window.setWindowPosition(100, 100);
-        // задаём иконку
 
         switch (Platform.CURRENT) {
             case WINDOWS -> window.setIcon(new File("src/main/resources/windows.ico"));
             case MACOS -> window.setIcon(new File("src/main/resources/macos.icns"));
         }
 
-        // названия слоёв, которые будем перебирать
         String[] layerNames = new String[]{
                 "LayerGLSkija", "LayerRasterSkija"
         };
 
-        // перебираем слои
         for (String layerName : layerNames) {
             String className = "io.github.humbleui.jwm.skija." + layerName;
             try {
@@ -56,24 +39,16 @@ public class Application implements Consumer<Event> {
             }
         }
 
-        // если окну не присвоен ни один из слоёв
         if (window._layer == null)
             throw new RuntimeException("Нет доступных слоёв для создания");
 
-        // делаем окно видимым
+
         window.setVisible(true);
     }
 
-    /**
-     * Обработчик событий
-     *
-     * @param e событие
-     */
     @Override
     public void accept(Event e) {
-        // если событие - это закрытие окна
         if (e instanceof EventWindowClose) {
-            // завершаем работу приложения
             App.terminate();
         } else if (e instanceof EventWindowCloseRequest) {
             window.close();

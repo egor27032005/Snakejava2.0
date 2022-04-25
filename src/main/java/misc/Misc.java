@@ -1,8 +1,6 @@
 package misc;
 
-/**
- * Вспомогательная библиотека
- */
+
 public class Misc {
 
     /**
