@@ -1,4 +1,4 @@
-package app;
+package misc.app;
 
 import misc.Misc;
 

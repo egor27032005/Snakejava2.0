@@ -1,4 +1,4 @@
-package app;
+package misc.app;
 
 import io.github.humbleui.jwm.*;
 import io.github.humbleui.jwm.skija.EventFrameSkija;
@@ -6,8 +6,6 @@ import io.github.humbleui.skija.Surface;
 
 import java.io.File;
 import java.util.function.Consumer;
-
-import static app.Colors.APP_BACKGROUND_COLOR;
 
 
 public class Application implements Consumer<Event> {
@@ -54,7 +52,7 @@ public class Application implements Consumer<Event> {
             window.close();
         }else if (e instanceof EventFrameSkija ee) {
             Surface s = ee.getSurface();
-            s.getCanvas().clear(APP_BACKGROUND_COLOR);
+            s.getCanvas().clear(Colors.APP_BACKGROUND_COLOR);
         }
     }
 }
