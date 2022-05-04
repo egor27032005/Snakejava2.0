@@ -7,18 +7,18 @@ import java.awt.event.KeyEvent;
 import java.util.Random;
 
 public class GameField extends JPanel implements ActionListener {
-    private final int SIZE = 320;
-    private final int DOT_SIZE = 25;
-    private final int ALL_DOTS = 400;
+    private final int SIZE = 320;//размер окна
+    private final int DOT_SIZE = 25;//размер ячеек
+    private final int ALL_DOTS = 196;//количество яблок
     private Image dot;
     private Image apple;
     private static Image Restart;
     private static Image game_over;
     private int appleX;
     private int appleY;
-    private int[] x = new int[ALL_DOTS];
+    private int[] x = new int[ALL_DOTS];//хранть положение змейки
     private int[] y = new int[ALL_DOTS];
-    private int dots;
+    private int dots;///размер змеи
     private Timer timer;
     private boolean left = false;
     private boolean right = true;
@@ -26,32 +26,35 @@ public class GameField extends JPanel implements ActionListener {
     private boolean down = false;
     private boolean inGame = true;
     private static int score=0;
+    private static float drop_y = -150;
+    private static float drop_x;
+    private static float drop_v = 220;
+    private static float restart_x =40;
+    private static float restart_y =60;
 
 
     public GameField() {
-        setBackground(Color.black);
+
         loadImages();
         initGame();
         addKeyListener(new FieldKeyListener());
         setFocusable(true);
 
     }
-    public static int getColor(int a, int r, int g, int b) {
-        return ((a * 256 + r) * 256 + g) * 256 + b;
-    }
 
-    public void initGame() {
+
+    public void initGame() {//начальное полочение игры
         dots = 3;
         for (int i = 0; i < dots; i++) {
             x[i] = 50 - i * DOT_SIZE;
             y[i] = 50;
         }
-        timer = new Timer(350, this);
+        timer = new Timer(250, this);
         timer.start();
         createApple();
     }
 
-    public void createApple() {
+    public void createApple() {//создает яблоки
         appleX = new Random().nextInt(15) * DOT_SIZE;
         appleY = new Random().nextInt(15) * DOT_SIZE;
     }
@@ -65,6 +68,12 @@ public class GameField extends JPanel implements ActionListener {
 
     @Override
     protected void paintComponent(Graphics g) {
+        JLabel record = new JLabel( "Рекорд" + score);
+        record.setSize(220, 150);
+        record.setPreferredSize(new Dimension(100,25));
+        record.setFont(new Font("Рекорд: " + score , Font.PLAIN, 19 ));
+        record.setOpaque(true);
+        record.setBackground(Color.white);
         super.paintComponent(g);
         if (inGame) {
             g.clipRect(0,0,getWidth(),getHeight());
@@ -75,14 +84,16 @@ public class GameField extends JPanel implements ActionListener {
         } else {
             ImageIcon iid = new ImageIcon("src/main/resources/Restart.png");
             Restart = iid.getImage();
-            g.drawImage(Restart, 145, 250, this);
+            g.drawImage(Restart, 125, 250, this);
 
             ImageIcon iia = new ImageIcon("src/main/resources/game_over.png");
             game_over = iia.getImage();
-            g.drawImage(game_over, 57, 0, this);
+            g.drawImage(game_over, 40, 0, this);
+            record.setText("Рекорд: "+score);
+            final var t =g.drawImage(score, 40, 0, this);
 
 
-    }
+        }
     }
 
     public void move() {
@@ -104,14 +115,15 @@ public class GameField extends JPanel implements ActionListener {
         }
     }
 
-    public void checkApple() {
+    public void checkApple() {//удлинять змейку
         if (x[0] == appleX && y[0] == appleY) {
             dots++;
             createApple();
         }
     }
 
-    public void checkCollisions() {
+
+    public void checkCollisions() {//проверяет на столкновение
         for (int i = dots; i > 0; i--) {
             if (i > 4 && x[0] == x[i] && y[0] == y[i]) {
                 inGame = false;
@@ -146,7 +158,7 @@ public class GameField extends JPanel implements ActionListener {
         repaint();
     }
 
-    class FieldKeyListener extends KeyAdapter {
+    class FieldKeyListener extends KeyAdapter {//управление
         @Override
         public void keyPressed(KeyEvent e) {
             super.keyPressed(e);
