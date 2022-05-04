@@ -4,10 +4,10 @@ import javax.swing.*;
 public class Main extends JFrame {
 
     public Main(){
-        setTitle("Змейка");
+        setTitle("JavaSnake");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(320,345);
-        setLocation(400,400);
+        setSize(350,375);
+        setLocation(500,300);
         add(new GameField());
         setVisible(true);
     }
@@ -15,5 +15,8 @@ public class Main extends JFrame {
     public static void main(String[] args) {
         Main mw = new Main();
     }
-}
 
+    public static int getColor(int a, int r, int g, int b) {
+        return ((a * 256 + r) * 256 + g) * 256 + b;
+    }
+}

@@ -8,10 +8,12 @@ import java.util.Random;
 
 public class GameField extends JPanel implements ActionListener {
     private final int SIZE = 320;
-    private final int DOT_SIZE = 16;
+    private final int DOT_SIZE = 25;
     private final int ALL_DOTS = 400;
     private Image dot;
     private Image apple;
+    private static Image Restart;
+    private static Image game_over;
     private int appleX;
     private int appleY;
     private int[] x = new int[ALL_DOTS];
@@ -23,6 +25,7 @@ public class GameField extends JPanel implements ActionListener {
     private boolean up = false;
     private boolean down = false;
     private boolean inGame = true;
+    private static int score=0;
 
 
     public GameField() {
@@ -33,21 +36,24 @@ public class GameField extends JPanel implements ActionListener {
         setFocusable(true);
 
     }
+    public static int getColor(int a, int r, int g, int b) {
+        return ((a * 256 + r) * 256 + g) * 256 + b;
+    }
 
     public void initGame() {
         dots = 3;
         for (int i = 0; i < dots; i++) {
-            x[i] = 48 - i * DOT_SIZE;
-            y[i] = 48;
+            x[i] = 50 - i * DOT_SIZE;
+            y[i] = 50;
         }
-        timer = new Timer(250, this);
+        timer = new Timer(350, this);
         timer.start();
         createApple();
     }
 
     public void createApple() {
-        appleX = new Random().nextInt(20) * DOT_SIZE;
-        appleY = new Random().nextInt(20) * DOT_SIZE;
+        appleX = new Random().nextInt(15) * DOT_SIZE;
+        appleY = new Random().nextInt(15) * DOT_SIZE;
     }
 
     public void loadImages() {
@@ -67,10 +73,16 @@ public class GameField extends JPanel implements ActionListener {
                 g.drawImage(dot, x[i], y[i], this);
             }
         } else {
-            String str = "Game Over";
-            g.setColor(Color.white);
-            g.drawString(str, 125, SIZE / 2);
-        }
+            ImageIcon iid = new ImageIcon("src/main/resources/Restart.png");
+            Restart = iid.getImage();
+            g.drawImage(Restart, 145, 250, this);
+
+            ImageIcon iia = new ImageIcon("src/main/resources/game_over.png");
+            game_over = iia.getImage();
+            g.drawImage(game_over, 57, 0, this);
+
+
+    }
     }
 
     public void move() {
@@ -117,6 +129,9 @@ public class GameField extends JPanel implements ActionListener {
         }
         if (y[0] < 0) {
             inGame = false;
+        }
+        if (y[0] > SIZE || y[0] < 0 || x[0] > SIZE || x[0]<0) {
+
         }
     }
 
