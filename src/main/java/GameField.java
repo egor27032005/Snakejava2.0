@@ -1,9 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.Random;
 
 public class GameField extends JPanel implements ActionListener {
@@ -24,22 +21,18 @@ public class GameField extends JPanel implements ActionListener {
     private boolean right = true;
     private boolean up = false;
     private boolean down = false;
-    private boolean inGame = true;
-    private static int score=0;
-    private static float drop_y = -150;
-    private static float drop_x;
-    private static float drop_v = 220;
-    private static float restart_x =40;
-    private static float restart_y =60;
+    private boolean inGame;
+    private static int score = 0;
 
 
     public GameField() {
-
+        setBackground(Color.black);
         loadImages();
         initGame();
         addKeyListener(new FieldKeyListener());
         setFocusable(true);
-
+        timer = new Timer(250, this);
+        timer.start();
     }
 
 
@@ -49,14 +42,13 @@ public class GameField extends JPanel implements ActionListener {
             x[i] = 50 - i * DOT_SIZE;
             y[i] = 50;
         }
-        timer = new Timer(250, this);
-        timer.start();
         createApple();
+        inGame = true;
     }
 
     public void createApple() {//создает яблоки
-        appleX = new Random().nextInt(15) * DOT_SIZE;
-        appleY = new Random().nextInt(15) * DOT_SIZE;
+        appleX = new Random().nextInt(13) * DOT_SIZE;
+        appleY = new Random().nextInt(13) * DOT_SIZE;
     }
 
     public void loadImages() {
@@ -68,33 +60,44 @@ public class GameField extends JPanel implements ActionListener {
 
     @Override
     protected void paintComponent(Graphics g) {
-        JLabel record = new JLabel( "Рекорд" + score);
-        record.setSize(220, 150);
-        record.setPreferredSize(new Dimension(100,25));
-        record.setFont(new Font("Рекорд: " + score , Font.PLAIN, 19 ));
-        record.setOpaque(true);
-        record.setBackground(Color.white);
         super.paintComponent(g);
         if (inGame) {
-            g.clipRect(0,0,getWidth(),getHeight());
+            g.clipRect(0, 0, getWidth(), getHeight());
             g.drawImage(apple, appleX, appleY, this);
             for (int i = 0; i < dots; i++) {
                 g.drawImage(dot, x[i], y[i], this);
             }
         } else {
+
             ImageIcon iid = new ImageIcon("src/main/resources/Restart.png");
             Restart = iid.getImage();
-            g.drawImage(Restart, 125, 250, this);
-
             ImageIcon iia = new ImageIcon("src/main/resources/game_over.png");
             game_over = iia.getImage();
             g.drawImage(game_over, 40, 0, this);
-            record.setText("Рекорд: "+score);
-            final var t =g.drawImage(score, 40, 0, this);
+            score = dots - 3;
+
+            JLabel record = new JLabel("Рекорд" + score);
+            record.setSize(100, 20);
+            record.setPreferredSize(new Dimension(100, 35));
+            record.setFont(new Font("Рекорд: " + score, Font.PLAIN, 19));
+            record.setOpaque(true);
+            record.setBackground(Color.white);
+            record.setText("Рекорд: " + score);
+            add(record);
 
 
+            JLabel label = new JLabel(iid);
+            label.setSize(100, 100);
+            label.setLocation(100, 200);
+            add(label);
+            label.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent me) {
+                    initGame();
+                }
+            });
         }
     }
+
 
     public void move() {
         for (int i = dots; i > 0; i--) {
@@ -142,7 +145,7 @@ public class GameField extends JPanel implements ActionListener {
         if (y[0] < 0) {
             inGame = false;
         }
-        if (y[0] > SIZE || y[0] < 0 || x[0] > SIZE || x[0]<0) {
+        if (y[0] > SIZE || y[0] < 0 || x[0] > SIZE || x[0] < 0) {
 
         }
     }
@@ -153,12 +156,12 @@ public class GameField extends JPanel implements ActionListener {
             checkApple();
             checkCollisions();
             move();
-
         }
         repaint();
     }
 
     class FieldKeyListener extends KeyAdapter {//управление
+
         @Override
         public void keyPressed(KeyEvent e) {
             super.keyPressed(e);

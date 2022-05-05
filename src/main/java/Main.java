@@ -8,7 +8,7 @@ public class Main extends JFrame {
     public Main(){
         setTitle("JavaSnake");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(345,365);//задает размер окна
+        setSize(355,365);//задает размер окна
         setLocation(600,200);//задает размер окна
         add(new GameField());//сылка на класс
         setVisible(true);
