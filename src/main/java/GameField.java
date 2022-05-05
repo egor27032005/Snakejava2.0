@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import java.util.Random;
 
 public class GameField extends JPanel implements ActionListener {
-    private final int SIZE = 320;
+    private final int SIZE = 350;
     private final int DOT_SIZE = 25;
     private final int ALL_DOTS = 400;
     private Image dot;
@@ -46,14 +46,14 @@ public class GameField extends JPanel implements ActionListener {
             x[i] = 50 - i * DOT_SIZE;
             y[i] = 50;
         }
-        timer = new Timer(350, this);
+        timer = new Timer(150, this);
         timer.start();
         createApple();
     }
 
     public void createApple() {
-        appleX = new Random().nextInt(15) * DOT_SIZE;
-        appleY = new Random().nextInt(15) * DOT_SIZE;
+        appleX = new Random().nextInt(13) * DOT_SIZE;
+        appleY = new Random().nextInt(13) * DOT_SIZE;
     }
 
     public void loadImages() {

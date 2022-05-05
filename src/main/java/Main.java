@@ -6,7 +6,7 @@ public class Main extends JFrame {
     public Main(){
         setTitle("JavaSnake");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(350,375);
+        setSize(365,450);
         setLocation(500,300);
         add(new GameField());
         setVisible(true);
