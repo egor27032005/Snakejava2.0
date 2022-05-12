@@ -33,6 +33,7 @@ public class GameField extends JPanel implements ActionListener {
         setFocusable(true);
         timer = new Timer(250, this);
         timer.start();
+
     }
 
 
@@ -77,7 +78,7 @@ public class GameField extends JPanel implements ActionListener {
             score = dots - 3;
 
             JLabel record = new JLabel("Рекорд" + score);
-            record.setSize(100, 20);
+            record.setSize(305, 17);
             record.setPreferredSize(new Dimension(100, 35));
             record.setFont(new Font("Рекорд: " + score, Font.PLAIN, 19));
             record.setOpaque(true);
@@ -88,7 +89,7 @@ public class GameField extends JPanel implements ActionListener {
 
             JLabel label = new JLabel(iid);
             label.setSize(100, 100);
-            label.setLocation(100, 200);
+            label.setLocation(270, -37);
             add(label);
             label.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent me) {
